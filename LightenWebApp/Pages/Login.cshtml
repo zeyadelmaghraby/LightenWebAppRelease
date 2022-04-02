@@ -1,0 +1,58 @@
+﻿@page
+@model LoginPageModel
+@{
+    ViewData["Title"] = "Login Page";
+}
+@using LightenWebApp.Models.Authentication
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+   <!-- body -->
+   <body class="main-layout">
+    <div class="brand_color">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Login Page</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- registration -->
+    <div class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="main_form" method="post">
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <input asp-for="LoginModel.Username" class="form-control" placeholder="User Name" type="text" name="Username" required />
+                                <span class="text-danger" asp-validation-for="LoginModel.Username"></span>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="LoginModel.Password" class="form-control" placeholder="Password" type="password" name="Password" required />
+                                <span class="text-danger" asp-validation-for="LoginModel.Password"></span>
+                            </div>
+                            <div class=" col-md-12">
+                                <input type="submit" value="Login" class="send" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end contact -->
+   </body>
+</html>
+@*
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}*@

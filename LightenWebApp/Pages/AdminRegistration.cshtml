@@ -1,0 +1,103 @@
+﻿@page
+@model AdminRegistrationModel
+@{
+    ViewData["Title"] = "Admin Registration Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+       <head>
+         <script>
+            function ValidateData() {
+                var name = document.forms["RegForm"]["Username"];
+                var email = document.forms["RegForm"]["Email"];
+                var password = document.forms["RegForm"]["Password"];
+                var Repassword = document.forms["RegForm"]["RePassword"];
+                var address =  document.forms["RegForm"]["FullAddress"];
+                var phone = document.forms["RegForm"]["PhoneNumber"];
+                var birthdate = document.forms["RegForm"]["Birthdate"];
+  
+                const userNameRegex = new RegExp('^[A-Za-z][A-Za-z0-9_]{7,29}$');
+                var mailformat = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+                if (!userNameRegex.test(name.value)) {
+                     ErrorField.innerHTML = "<span style='color: orange;'>"+
+                        "Username should only contain letters,numbers and underscore between 8 to 30 chars</span>"
+                    name.focus();
+                    return false;
+                }
+  
+                if (!mailformat.test(email.value)) {
+                     ErrorField.innerHTML = "<span style='color: orange;'>"+
+                        "Please enter a valid e-mail address</span>"
+                    name.focus();
+                    return false;
+                }
+  
+                if (password.value != Repassword.value) {
+                    ErrorField.innerHTML = "<span style='color: orange;'>"+
+                        "Passwords don't match</span>"
+                    name.focus();
+                    return false;
+                }
+  
+                return true;
+            }
+        </script>
+   </head>
+   <!-- body -->
+   <body class="main-layout">
+      <div class="brand_color">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Admin Registration Page</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- registration -->
+    <div class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <form name="RegForm" class="main_form" method="post" onsubmit="return ValidateData()">
+                         <span id="ErrorField"></span>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input asp-for="Register.Username" class="form-control" placeholder="User Name" type="text" name="Username" required/>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input asp-for="Register.Email" class="form-control" placeholder="Email" type="text" name="Email" required/>
+                            </div>
+                            <div class=" col-md-12">
+                                <input asp-for="Register.Password" class="form-control" placeholder="Password" type="password" name="Password" required/>
+                            </div>
+                             <div class=" col-md-12">
+                                <input asp-for="Register.Password" class="form-control" placeholder="Confirm Password" type="password" name="RePassword" required/>
+                            </div>
+                            <div class=" col-md-12">
+                                <input asp-for="Register.FullAddress" class="form-control" placeholder="Full Address" type="text" name="FullAddress" required/>
+                            </div>
+
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input asp-for="Register.PhoneNumber" class="form-control" placeholder="Phone Number" type="tel" name="PhoneNumber" required/>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                <input asp-for="Register.Birthdate" class="form-control" placeholder="Birthdate" type="date" name="Birthdate" required/>
+                            </div>
+                            <div class=" col-md-12">
+                                <input type="submit" value="Register" class="send" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end contact -->
+   </body>
+</html>

@@ -1,0 +1,570 @@
+﻿@page
+@model ProductListingModel
+@{
+    ViewData["Title"] = "Product Listing page";
+}
+@using LightenWebApp.Models.Authentication
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <!-- body -->
+   <body class="main-layout">
+      <!-- our product -->
+      <div class="product">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="title">
+                     <h2>our <strong class="black">products</strong></h2>
+                     <span>We package the products with best services to make you a happy customer.</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Filteration -->
+    <div class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Control buttons -->
+                    <div id="myBtnContainer">
+                        <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                        <button class="btn" onclick="filterSelection('tvs')"> TVs</button>
+                        <button class="btn" onclick="filterSelection('laptops')"> Laptops</button>
+                        <button class="btn" onclick="filterSelection('soundSystems')"> Sound Systems</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-bg">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+                        <!-- Carousel indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
+                 
+                        <!-- Wrapper for carousel items -->
+                        <div class="carousel-inner">
+                            <div class="item carousel-item active">
+                                <div class="row">
+                                    @foreach (var item in Model.ProductList)
+                                    {
+                                        <div class="col-sm-3">
+                                            @if (item.CurrentCategoryId == 1)
+                                            {
+                                                <div class="thumb-wrapper filterDiv tvs">
+                                                    <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+                                                    <div class="img-box">
+                                                        <img src="images/Curved.jpg" class="img-fluid" alt="">
+                                                    </div>
+                                                    <div class="thumb-content">
+                                                        <h4>@Html.DisplayFor(modelItem => item.ProductName)</h4>
+                                                        <div class="star-rating">
+                                                            <ul class="list-inline">
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="item-price"><b>@Html.DisplayFor(modelItem => item.ProductPrice)</b></p>
+                                                        @if(!String.IsNullOrWhiteSpace(Model.Username))
+                                                        {
+                                                            <button class="btn btn-primary" onclick="checkCookie('@item.ProductId', '@Model.Username')">Add to Cart</button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (item.CurrentCategoryId == 2)
+                                            {
+                                                <div class="thumb-wrapper filterDiv laptops">
+                                                    <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+                                                    <div class="img-box">
+                                                        <img src="images/Curved.jpg" class="img-fluid" alt="">
+                                                    </div>
+                                                    <div class="thumb-content">
+                                                        <h4>@Html.DisplayFor(modelItem => item.ProductName)</h4>
+                                                        <div class="star-rating">
+                                                            <ul class="list-inline">
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="item-price"><b>@Html.DisplayFor(modelItem => item.ProductPrice)</b></p>
+                                                        <button class="btn btn-primary" onclick="checkCookie('@item.ProductId', '@Model.Username')">Add to Cart</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (item.CurrentCategoryId == 3)
+                                            {
+                                                <div class="thumb-wrapper filterDiv soundSystems">
+                                                    <span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+                                                    <div class="img-box">
+                                                        <img src="images/Curved.jpg" class="img-fluid" alt="">
+                                                    </div>
+                                                    <div class="thumb-content">
+                                                        <h4>@Html.DisplayFor(modelItem => item.ProductName)</h4>
+                                                        <div class="star-rating">
+                                                            <ul class="list-inline">
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="item-price"><b>@Html.DisplayFor(modelItem => item.ProductPrice)</b></p>
+                                                        <button class="btn btn-primary" onclick="checkCookie('@item.ProductId', '@Model.Username')">Add to Cart</button>
+                                                    </div>
+                                                </div>
+                                            }
+                            
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Carousel controls -->
+                        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+                </div>
+      
+        </div>
+      <!-- end our product -->
+   </body>
+</html>
+
+
+<style>
+    .container {
+        overflow: hidden;
+    }
+
+    .filterDiv {
+        float: left;
+        background-color: #2196F3;
+        color: #ffffff;
+        /*width: 100px;*/
+        /*line-height: 100px;*/
+        text-align: center;
+        /*margin: 2px;*/
+        display: none; /* Hidden by default */
+    }
+
+    /* The "show" class is added to the filtered elements */
+    .show {
+        display: block;
+    }
+
+    /* Style the buttons */
+    .btn {
+        border: none;
+        outline: none;
+        padding: 12px 16px;
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+
+        /* Add a light grey background on mouse-over */
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        /* Add a dark background to the active button */
+        .btn.active {
+            background-color: #666;
+            color: white;
+        }
+
+    .counter {
+        width: 150px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .counter input {
+            width: 50px;
+            border: 0;
+            line-height: 30px;
+            font-size: 20px;
+            text-align: center;
+            background: #0052cc;
+            color: #fff;
+            appearance: none;
+            outline: 0;
+        }
+
+        .counter span {
+            display: block;
+            font-size: 25px;
+            padding: 0 10px;
+            cursor: pointer;
+            color: #0052cc;
+            user-select: none;
+        }           
+
+    .fa-cart-plus {
+        background: #0652DD;
+    }
+
+    .addtocart {
+        display: block;
+        padding: 0.5em 1em 0.5em 1em;
+        border-radius: 100px;
+        border: none;
+        font-size: 2em;
+        position: relative;
+        background: #0652DD;
+        cursor: pointer;
+        height: 2em;
+        width: 10em;
+        overflow: hidden;
+        transition: transform 0.1s;
+        z-index: 1;
+    }
+
+        .addtocart:hover {
+            transform: scale(1.1);
+        }
+
+    .pretext {
+        color: #fff;
+        background: #0652DD;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    i {
+        margin-right: 10px;
+    }
+
+    .done {
+        background: #be2edd;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        transition: transform 0.3s ease;
+        transform: translate(-110%) skew(-40deg);
+    }
+
+    .posttext {
+        background: #be2edd;
+    }
+
+    .fa-check {
+        background: #be2edd;
+    }
+    
+
+
+    .center {
+        text-align: center;
+    }
+
+    .pagination {
+        display: inline-block;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+
+
+            
+.carousel {
+	margin: 50px auto;
+	padding: 0 70px;
+}
+.carousel .item {
+	color: #747d89;
+	min-height: 325px;
+	text-align: center;
+	overflow: hidden;
+}
+.carousel .thumb-wrapper {
+	padding: 25px 15px;
+	background: #fff;
+	border-radius: 6px;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+.carousel .item .img-box {
+	height: 120px;
+	margin-bottom: 20px;
+	width: 100%;
+	position: relative;
+}
+.carousel .item img {	
+	max-width: 100%;
+	max-height: 100%;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+}
+.carousel .item h4 {
+	font-size: 18px;
+}
+.carousel .item h4, .carousel .item p, .carousel .item ul {
+	margin-bottom: 5px;
+}
+.carousel .thumb-content .btn {
+	color: #7ac400;
+	font-size: 11px;
+	text-transform: uppercase;
+	font-weight: bold;
+	background: none;
+	border: 1px solid #7ac400;
+	padding: 6px 14px;
+	margin-top: 5px;
+	line-height: 16px;
+	border-radius: 20px;
+}
+.carousel .thumb-content .btn:hover, .carousel .thumb-content .btn:focus {
+	color: #fff;
+	background: #7ac400;
+	box-shadow: none;
+}
+.carousel .thumb-content .btn i {
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+.carousel .item-price {
+	font-size: 13px;
+	padding: 2px 0;
+}
+.carousel .item-price strike {
+	opacity: 0.7;
+	margin-right: 5px;
+}
+.carousel-control-prev, .carousel-control-next {
+	height: 44px;
+	width: 40px;
+	background: #7ac400;	
+	margin: auto 0;
+	border-radius: 4px;
+	opacity: 0.8;
+}
+.carousel-control-prev:hover, .carousel-control-next:hover {
+	background: #78bf00;
+	opacity: 1;
+}
+.carousel-control-prev i, .carousel-control-next i {
+	font-size: 36px;
+	position: absolute;
+	top: 50%;
+	display: inline-block;
+	margin: -19px 0 0 0;
+	z-index: 5;
+	left: 0;
+	right: 0;
+	color: #fff;
+	text-shadow: none;
+	font-weight: bold;
+}
+.carousel-control-prev i {
+	margin-left: -2px;
+}
+.carousel-control-next i {
+	margin-right: -4px;
+}		
+.carousel-indicators {
+	bottom: -50px;
+}
+.carousel-indicators li, .carousel-indicators li.active {
+	width: 10px;
+	height: 10px;
+	margin: 4px;
+	border-radius: 50%;
+	border: none;
+}
+.carousel-indicators li {	
+	background: rgba(0, 0, 0, 0.2);
+}
+.carousel-indicators li.active {	
+	background: rgba(0, 0, 0, 0.6);
+}
+.carousel .wish-icon {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	z-index: 99;
+	cursor: pointer;
+	font-size: 16px;
+	color: #abb0b8;
+}
+.carousel .wish-icon .fa-heart {
+	color: #ff6161;
+}
+.star-rating li {
+	padding: 0;
+}
+.star-rating i {
+	font-size: 14px;
+	color: #ffc000;
+}
+
+</style>
+
+<script>
+$(document).ready(function(){
+	$(".wish-icon i").click(function(){
+		$(this).toggleClass("fa-heart fa-heart-o");
+	});
+});	
+</script>
+
+<script>
+
+    filterSelection("all")
+    function filterSelection(c) {
+      var x, i;
+      x = document.getElementsByClassName("filterDiv");
+      if (c == "all") c = "";
+      // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+      for (i = 0; i < x.length; i++) {
+        w3RemoveClass(x[i], "show");
+        if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+      }
+    }
+
+    // Show filtered elements
+    function w3AddClass(element, name) {
+      var i, arr1, arr2;
+      arr1 = element.className.split(" ");
+      arr2 = name.split(" ");
+      for (i = 0; i < arr2.length; i++) {
+        if (arr1.indexOf(arr2[i]) == -1) {
+          element.className += " " + arr2[i];
+        }
+      }
+    }
+
+    // Hide elements that are not selected
+    function w3RemoveClass(element, name) {
+      var i, arr1, arr2;
+      arr1 = element.className.split(" ");
+      arr2 = name.split(" ");
+      for (i = 0; i < arr2.length; i++) {
+        while (arr1.indexOf(arr2[i]) > -1) {
+          arr1.splice(arr1.indexOf(arr2[i]), 1);
+        }
+      }
+      element.className = arr1.join(" ");
+    }
+
+    function checkCookie(productId, username) {
+          let cookieProducts = getCookie(username);
+          if (cookieProducts != "") {
+            cookieProducts = cookieProducts + '/' + productId;
+            setCookie(username, cookieProducts, 30);
+          } else {
+              setCookie(username, productId, 30);
+          }
+    }
+
+      function setCookie(cname, cvalue, exdays) {
+          const d = new Date();
+          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+          let expires = "expires="+d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+
+      function getCookie(cname) {
+          let name = cname + "=";
+          let ca = document.cookie.split(';');
+          for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+    }
+
+    // Add active class to the current control button (highlight it)
+    var btnContainer = document.getElementById("myBtnContainer");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+        var current = document.getElementsByClassName("active");
+        current[0].className = current[0].className.replace(" active", "");
+        this.className += " active";
+      });
+    }
+
+    const button = document.querySelector(".addtocart");
+    const done = document.querySelector(".done");
+    console.log(button);
+    let added = false;
+    button.addEventListener('click',()=>{
+      if(added){
+        done.style.transform = "translate(-110%) skew(-40deg)";
+        added = false;
+      }
+      else{
+        done.style.transform = "translate(0px)";
+        added = true;
+      }
+
+    });
+
+</script>
+
+
